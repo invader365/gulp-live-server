@@ -1,27 +1,22 @@
-# Gulp Live server
+# Gulp Live Server
 
-A simple Gulp live server to build and run locally static html sites. Made with bootstrap, served with gulp and spiced with ejs and scss.
+A simple Gulp live server to build and run locally static html sites
 
 ## Features
 
-* Build with Gulp 4
+* Build with Gulp 4+
 * Created upon Bootstrap (All versions supported)
-* Uses EJS Embedded JavaScript templating
-* Sass CSS Stylesheet Preprocessor
+* EJS (Embedded JavaScript templating) or Jade templating languages
+* Sass or Less CSS style sheet preprocessors
 
-## Install packages
+## Quick start
 
-### Npm
 
 ```
+# Installs modules and dependencies
 npm install
-```
 
-## Local build
-
-To build live server locally run:
-
-```
+# Runs gulp and starts server
 npm start
 ```
 

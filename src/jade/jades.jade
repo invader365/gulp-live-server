@@ -1,0 +1,157 @@
+//-
+//- Jades
+//- A small collection of jade mixins
+//-
+//- --------------------------------------------------------- */
+
+//-  Contents:
+//-
+//-  th-a(one, two, three)
+//-  tbody-td(10, [one, two, three])
+//-  links([one, two, three])
+//-  span([one, two, three])
+//-  group('2', ['text', 'select'], [option, option, option])
+
+//- --------------------------------------------------------- */
+
+//-  mixin th(one, two, three)
+
+    //- <tr>
+    //-     <th>
+    //-         <a href="#">one</a>
+    //-     </th>
+    //-     <th>
+    //-         <a href="#">two</a>
+    //-     </th>
+    //-     <th>
+    //-         <a href="#">three</a>
+    //-     </th>
+    //- </tr>
+    
+mixin thead-a(items)
+    tr
+        - each item in items
+            th
+                a(href="#")= item
+
+
+//-  mixin tbody-td(10, [one, two, three])
+
+    //- <tr>
+    //-     <td>one</td>
+    //-     <td>two</td>
+    //-     <td>three</td>
+    //- </tr>
+
+mixin tbody-td(length, values)
+    - for (var i = 0; i < length; ++i) {
+        tr
+            - each item in values
+                td= item
+    - }
+
+
+//-  mixin links([one, two, three])
+
+    //- <a href="#">one</a>
+    //- <a href="#">two</a>
+    //- <a href="#">three</a>
+
+mixin links(list)
+    - each item in list
+        a(href="#")= item
+
+
+//-  mixin span([one, two, three])
+
+    //- <span>one</span>
+    //- <span>two</span>
+    //- <span>three</span>
+
+mixin span(list)
+    - each item in list
+        span= item
+
+
+//-  mixin field(one, two, three, four)
+
+    //- <li class="one">
+    //-     <strong>two</strong>
+    //-     <div>
+    //-         <label>
+    //-             <input type="text">
+    //-         </label>
+    //-     </div>
+    //- </li>
+
+mixin field(clase, summary, input, options)
+    li(class=clase)
+        strong #{summary}
+        div
+            label
+                mixin input(input, options)
+
+
+//-  mixin field(one, two, three)
+
+    //- <li class="one">
+    //-     <strong>two</strong>
+    //-     <div>
+    //-         <label>
+    //-             <input type="text" readonly="readonly", value="three">
+    //-         </label>
+    //-     </div>
+    //- </li>
+
+mixin field-read(col, summary, value)
+    li(class=col)
+        strong #{summary}
+        div
+            label
+                input(type="text", readonly="readonly", value=value)
+
+                    
+//- mixin group('2', ['text', 'select'], [option, option, option])
+
+mixin group(group, inputs, options)
+    div(class='group' + '#{group}')
+        - for (var i = 0; i < group; i++)
+            label
+                mixin input(inputs[i], options)
+
+
+//-  mixin input(radio, one)
+
+    //- <input type="radio">
+    //- <span>one</span>
+
+    //- <select>
+    //-     <option>one</option>
+    //-     <option>two</option>
+    //-     <option>three</option>
+    //- </select>
+
+mixin input(input, options)
+        case input
+            when "text"
+                input(type='#{input}')
+            when "file"
+                input(type='#{input}')
+            when "password"
+                input(type='#{input}')
+            when "checkbox"
+                input(type='#{input}')
+                span #{options}
+            when "radio"
+                input(type='#{input}')
+                span #{options}
+            when "textarea"
+                textarea(rows='4')
+            when "select"
+                select
+                    - each item in options
+                        option= item
+            when "multiple"
+                select(size='4', multiple='multiple')
+                    - each item in options
+                        option= item

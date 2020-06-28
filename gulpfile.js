@@ -1,41 +1,59 @@
 const gulp   = require("gulp")
-const sass   = require("gulp-sass")
 const ejs    = require("gulp-ejs")
+const jade   = require("gulp-jade")
+const less   = require("gulp-less")
+const sass   = require("gulp-sass")
 const rename = require('gulp-rename')
 const bsync  = require('browser-sync').create()
 
 const _path = {
     build: ["./public"],
-    ejs:   ["./src/views"],
+    ejs:   ["./src/ejs"],
+    jade:  ["./src/jade"],
+    less:  ["./src/less"],
     sass:  ["./src/scss"]
 }
+
+gulp.task('ejs', () =>
+    gulp.src(_path.ejs + '/views/*.ejs')
+        .pipe(ejs({ title: 'gulp-ejs' }))
+        .pipe(rename({ extname: '.html' }))
+        .pipe(gulp.dest(_path.build))
+)
+
+gulp.task('jade', () =>
+    gulp.src(_path.jade + '/views/*.jade')
+        .pipe(jade({ title: 'gulp-jade' }))
+        .pipe(rename({ extname: '.html' }))
+        .pipe(gulp.dest(_path.build))
+)
+
+gulp.task('less', () =>
+  gulp.src(_path.less + '/main.less')
+    .pipe(less())
+    .pipe(gulp.dest(_path.build + '/css'))
+)
 
 gulp.task('sass', () =>
     gulp.src(_path.sass + '/main.scss')
         .pipe(sass())
-        // .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+        .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
         .pipe(gulp.dest(_path.build + '/css'))
-)
-
-gulp.task('ejs', () =>
-    gulp.src(_path.ejs + '/pages/*.ejs')
-        .pipe(ejs({ title: 'gulp-ejs' }))
-        .pipe(rename({ extname: '.html' }))
-        .pipe(gulp.dest(_path.build))
 )
 
 gulp.task('serve', () =>
     bsync.init({server: _path.build})
 )
 
-gulp.task('reload', (done) => {
+gulp.task('reload', done => {
     bsync.reload(),
     done()
 })
 
 gulp.task('watch', () =>
-    gulp.watch(_path.ejs, gulp.series('ejs', 'reload')),
-    gulp.watch(_path.sass, gulp.series('sass', 'reload')),
+    // Initial configuration
+    gulp.watch(_path.jade, gulp.series('jade', 'reload')),
+    gulp.watch(_path.less, gulp.series('less', 'reload')),
     gulp.watch(_path.build + '/**/*.{html,js,css}', gulp.series('reload'))
 )
 
